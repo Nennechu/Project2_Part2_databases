@@ -1,0 +1,58 @@
+CREATE TABLE PUBLISHER (
+    Publisher_Name VARCHAR(30) NOT NULL,
+    Phone VARCHAR(10) NOT NULL,
+    Address VARCHAR(60) NOT NULL,
+    PRIMARY KEY(Publisher_Name)
+);
+
+CREATE TABLE LIBRARY_BRANCH (
+    Branch_Id INT NOT NULL,
+    Branch_Name VARCHAR(15) NOT NULL,
+    Branch_Address VARCHAR(35) NOT NULL,
+    PRIMARY KEY(Branch_Id)
+);
+
+CREATE TABLE BORROWER (
+    Card_No INT NOT NULL,
+    Name VARCHAR(15) NOT NULL,
+    Address VARCHAR(40) NOT NULL,
+    Phone VARCHAR(10) NOT NULL,
+    PRIMARY KEY(Card_No)
+);
+
+CREATE TABLE BOOK (
+    Book_Id INT NOT NULL,
+    Title VARCHAR(40) NOT NULL,
+    Publisher_Name VARCHAR(30) NOT NULL,
+    PRIMARY KEY(Book_Id),
+    FOREIGN KEY(Publisher_Name) REFERENCES PUBLISHER(Publisher_Name)
+);
+
+CREATE TABLE BOOK_LOANS (
+    Book_Id INT NOT NULL,
+    Branch_Id INT NOT NULL,
+    Card_No INT NOT NULL,
+    Date_Out DATE NOT NULL,
+    Due_Date DATE NOT NULL,
+    Returned_Date DATE,
+    PRIMARY KEY(Book_Id, Branch_Id, Card_No),
+    FOREIGN KEY(Book_Id) REFERENCES BOOK(Book_Id),
+    FOREIGN KEY(Branch_Id) REFERENCES LIBRARY_BRANCH(Branch_Id),
+    FOREIGN KEY(Card_No) REFERENCES BORROWER(Card_No)
+);
+
+CREATE TABLE BOOK_COPIES (
+    Book_Id INT NOT NULL,
+    Branch_Id INT NOT NULL,
+    No_Of_Copies INT NOT NULL,
+    PRIMARY KEY(Book_Id, Branch_Id),
+    FOREIGN KEY(Book_Id) REFERENCES BOOK(Book_Id),
+    FOREIGN KEY(Branch_Id) REFERENCES LIBRARY_BRANCH(Branch_Id)
+);
+
+CREATE TABLE BOOK_AUTHORS (
+    Book_Id INT NOT NULL,
+    Author_Name VARCHAR(25) NOT NULL,
+    PRIMARY KEY(Book_Id),
+    FOREIGN KEY(Book_Id) REFERENCES BOOK(Book_Id)
+);
